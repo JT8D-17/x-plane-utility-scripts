@@ -4,7 +4,9 @@ This is a handy script that will automate X-Plane installation. When run from a 
 
 I use this to create several different X-Plane installations with a minimum of file duplication.
 
-**THIS SCRIPT IS TO BE CONSIDERED VERY EXPERIMENTAL AND WAS ONLY TAILORED TO MY PERSONAL NEEDS. USE AT YOUR OWN RISK **
+**THIS SCRIPT IS TO BE CONSIDERED VERY EXPERIMENTAL AND WAS ONLY TAILORED TO MY PERSONAL NEEDS. USE AT YOUR OWN RISK**  
+
+--
 
 ## Notes
 
