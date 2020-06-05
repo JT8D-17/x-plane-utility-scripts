@@ -2,7 +2,7 @@
 #
 # X-Plane Benchmark - Automated script by BK
 #
-# README: https://github.com/JT8D-17/x-plane-utility-scripts/Benchmarking/readme.md
+# README: https://github.com/JT8D-17/x-plane-utility-scripts/blob/master/Linux%20benchmarking/Readme.md
 #
 # LICENSED UNDER EUPL v1.2: https://github.com/JT8D-17/x-plane-utility-scripts/blob/master/license.md
 #
