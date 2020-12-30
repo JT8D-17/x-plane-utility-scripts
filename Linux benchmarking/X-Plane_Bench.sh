@@ -2,9 +2,13 @@
 #
 # X-Plane Benchmark - Automated script by BK
 #
-# README: https://github.com/JT8D-17/x-plane-utility-scripts/blob/master/Linux%20benchmarking/Readme.md
+# README: https://github.com/JT8D-17/x-plane-utility-scripts/Benchmarking/readme.md
 #
 # LICENSED UNDER EUPL v1.2: https://github.com/JT8D-17/x-plane-utility-scripts/blob/master/license.md
+#
+#
+# Execution and parameters: See bottom of file
+#
 #
 # Configuration
 
@@ -18,16 +22,32 @@ function runbench {
 echo ----------------------------------------------------------------------------- >> $Outputfile
 
 if [ "$2" = "opengl" ]; then
-    echo Command line options: --$2 --fps_test=$1 --load_smo=$Replayfile >> $Outputfile
-    "$PWD/X-Plane-x86_64" --$2 --fps_test=$1 --load_smo=$Replayfile
-else
-    if [ "$3" = "aco" ]; then
+    if [ "$3" = "glthread" ]; then
+        echo OpenGL: Mesa_glthread = true >> $Outputfile
         echo Command line options: --$2 --fps_test=$1 --load_smo=$Replayfile >> $Outputfile
-        export RADV_PERFTEST=aco 
+        export mesa_glthread=true 
         "$PWD/X-Plane-x86_64" --$2 --fps_test=$1 --load_smo=$Replayfile
     else
+        echo OpenGL: Mesa_glthread = false >> $Outputfile
         echo Command line options: --$2 --fps_test=$1 --load_smo=$Replayfile >> $Outputfile
-        export RADV_PERFTEST=llvm
+        export mesa_glthread=false 
+        "$PWD/X-Plane-x86_64" --$2 --fps_test=$1 --load_smo=$Replayfile
+    fi
+else
+    if [ "$3" = "llvm" ]; then
+        echo Vulkan: Mesa (LLVM compiler) >> $Outputfile
+        echo Command line options: --$2 --fps_test=$1 --load_smo=$Replayfile >> $Outputfile
+        #export RADV_PERFTEST=llvm #Before Mesa 20.2
+        export RADV_DEBUG=llvm #Since Mesa 20.2
+        "$PWD/X-Plane-x86_64" --$2 --fps_test=$1 --load_smo=$Replayfile
+    elif [ "$3" = "amdvlk" ]; then
+        echo Vulkan: AMDVLK >> $Outputfile
+        echo Command line options: --$2 --fps_test=$1 --load_smo=$Replayfile >> $Outputfile
+        VK_ICD_FILENAMES=/usr/share/vulkan/icd.d/amd_icd64.json "$PWD/X-Plane-x86_64" --$2 --force_run --fps_test=$1 --load_smo=$Replayfile
+    else
+        echo Vulkan: NVidia or AMD Mesa (ACO compiler) >> $Outputfile
+        echo Command line options: --$2 --fps_test=$1 --load_smo=$Replayfile >> $Outputfile
+        #export RADV_PERFTEST=aco #Not needed since Mesa 20.2
         "$PWD/X-Plane-x86_64" --$2 --fps_test=$1 --load_smo=$Replayfile
     fi
 fi
@@ -58,14 +78,13 @@ function extracthw {
     echo SESSION END >> $Outputfile
 }
 
+# Script Execution
+# Parameters for OpenGL: runbench [3/4/5/54/55] opengl [glthread]
+# Parameters for Vulkan: runbench [3/4/5/54/55] vulkan [llvm/amdvlk]
 addheader
-runbench 5 opengl
-runbench 5 vulkan
-runbench 5 vulkan aco
-runbench 54 opengl
-runbench 54 vulkan
-runbench 54 vulkan aco
-runbench 55 opengl
-runbench 55 vulkan
-runbench 55 vulkan aco
+runbench 55 opengl          # NVidia and AMD
+runbench 55 opengl glthread # NVidia and AMD
+runbench 55 vulkan          # NVidia and AMD
+#runbench 55 vulkan llvm     # AMD with Mesa ONLY
+#runbench 55 vulkan amdvlk   # AMD with AMDVLK ONLY
 extracthw

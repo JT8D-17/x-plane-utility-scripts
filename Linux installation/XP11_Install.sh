@@ -9,8 +9,8 @@
 # Configuration
 clear
 
-parent_folder="/media/Simulators/X-Plane_11"
 current_folder="$PWD"
+parent_folder="$(dirname "$current_folder")/X-Plane_11_Resources"
 
 # FOLDERS
 folder_names=(
@@ -41,7 +41,8 @@ X-Plane\ Landmarks\ -\ Washington\ DC
 )
 
 common_folders=(
-Aircraft
+Aircraft/Extra\ Aircraft
+Aircraft/Laminar\ Research
 Airfoils
 Custom\ Data
 Global\ Scenery
@@ -86,13 +87,25 @@ function local_dirs(){
 		mkdir "$basedir"
 		echo "CREATED: $basedir";
 	fi
-		if [ ! -h "$addonscenerydir" ]; then 
+	if [ ! -h "$addonaircraftdir" ]; then 
+		mkdir "$addonaircraftdir"
+		echo "CREATED: $addonaircraftdir";
+	fi
+	if [ ! -h "$addonscenerydir" ]; then 
 		mkdir "$addonscenerydir"
 		echo "CREATED: $addonscenerydir";
 	fi
 	if [ ! -h "$controlsdir" ]; then 
 		mkdir "$controlsdir"
 		echo "CREATED: $controlsdir";
+	fi
+	if [ ! -h "$PWD/Aircraft" ]; then 
+		mkdir "$PWD/Aircraft"
+		echo "CREATED: $PWD/Aircraft";
+	fi
+	if [ ! -h "$basedir/Aircraft" ]; then 
+		mkdir "$basedir/Aircraft"
+		echo "CREATED: $basedir/Aircraft";
 	fi
 	if [ ! -h "$PWD/Resources" ]; then 
 		mkdir "$PWD/Resources"
@@ -118,6 +131,10 @@ function local_dirs(){
 		ln -s "$controlsdir" "$PWD/Output/preferences/control profiles"
 		echo "LINKED: Output/preferences/control profiles";
 	fi
+	if [ ! -h "$PWD/Aircraft/${folder_names[2]}" ]; then
+		ln -s "$addonaircraftdir" "$PWD/Aircraft/${folder_names[2]}"
+		echo "LINKED: Aircraft/${folder_names[2]}";
+	fi
 	pause "Press enter to continue... "
 }
 
@@ -132,7 +149,7 @@ function construct_folders(){
 		if [ ! -h "$PWD/$folder" ]; then 
 			ln -s "$basedir/$folder" "$PWD/$folder"
 			echo "LINKED: $folder";
-			pause "Press enter to continue... "
+			#pause "Press enter to continue... "
 		fi
 	done
 	pause "Press enter to continue... "
@@ -180,6 +197,7 @@ function link_defaults_to_local(){
 }
 
 function link_addons_to_local(){
+    clear
 	
 	check_customscenery
 	
