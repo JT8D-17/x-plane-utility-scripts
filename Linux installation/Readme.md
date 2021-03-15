@@ -1,21 +1,25 @@
 # X-Plane 11.50+ Installation Script for Linux
 
-This is a handy script that will automate X-Plane installation. When run from a "client" folder intended for an X-Plane installation, it will set up a base folder containing shared elements parallel to it. After that, it will create symbolic links to the shared elements in the base folder. The installer also offers various methods to deal with custom scenery folders.
+This is a handy script that will automate X-Plane installation. When run from a "client" folder intended for an X-Plane installation (the one that contains the binaries), it will set up a base folder containing shared elements parallel to it. After that, it will create symbolic links to the shared elements in the base folder. The installer also offers various methods to deal with custom scenery folders.
 
 I use this to create several different X-Plane installations with a minimum of file duplication.
 
-**THIS SCRIPT IS TO BE CONSIDERED VERY EXPERIMENTAL AND WAS ONLY TAILORED TO MY PERSONAL NEEDS. USE AT YOUR OWN RISK**  
+**THIS SCRIPT IS TO BE CONSIDERED EXPERIMENTAL AND WAS ONLY TAILORED TO MY PERSONAL NEEDS. USE AT YOUR OWN RISK**  
 
 --
 
 ## Notes
 
-- The base folder installation path is fixed **and has to be adapted to your partition path** (*parent_folder* variable in the script)
-- The control profile folder is always located in the base folder
-- When no X-Plane installation folder path information is present yet, you have to run Laminar's X-Plane installer once and set everything up
-- The "output" (except the control profile folder) and "plugins" folders remain local to the client folders, i.e. no shared plugins or settings
-- Test this in a safe envioronment first
-
+- Run this from a folder that you want to have X-Plane's binaries in
+- The path to the resources folder is parallel to the X-Plane installation (binaries) folder
+- There will be separate folders for add-on aircraft, add-on sceneries and add-on orthos. Use these to store your third party aircraft, sceneries and othos respectively.
+- The control profile folder is always located in the resources folder
+- *Base_data* contains all items from a default X-Plane installation
+- At the end of the installation, *~/.x-plane/x-plane_install_11.txt* will be automatically appended with the path to the folder containign the X-Plane binaries
+- The "output" (except the control profile folder) and "plugins" folders remain local to the folder(s) containing the X-Plane binaries, i.e. no support for shared plugins or settings
+- Run the script first to create all the base folders, then run the installer
+- Initial management of the "Custom Scenery" folder may have to be done manually. Let the installer download the files to the folder with X-Plane's binaries first, then manually move the "Custom Scenery" folder into the *X-Plane_Resources/Base_Data/* folder. After that, run the script again and implement the desired type of add-on scenery linking
+- I've tried to make this relatively fail-safe, but it's best to test all the features in a controlled environment before installing a production-grade X-Plane
 --
 
 ## License

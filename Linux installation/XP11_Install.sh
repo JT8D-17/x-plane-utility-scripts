@@ -10,7 +10,7 @@
 clear
 
 current_folder="$PWD"
-parent_folder="$(dirname "$current_folder")/X-Plane_11_Resources"
+parent_folder="$(dirname "$current_folder")/X-Plane_Resources"
 
 # FOLDERS
 folder_names=(
@@ -18,6 +18,7 @@ Base_Data
 Control_Profiles
 AddOn_Airplanes
 AddOn_Sceneries
+AddOn_Orthos
 )
 
 
@@ -77,6 +78,7 @@ basedir="$parent_folder/${folder_names[0]}"
 controlsdir="$parent_folder/${folder_names[1]}"
 addonaircraftdir="$parent_folder/${folder_names[2]}"
 addonscenerydir="$parent_folder/${folder_names[3]}"
+orthoscenerydir="$parent_folder/${folder_names[4]}"
 
 function local_dirs(){
 	if [ ! -h "$parent_folder" ]; then 
@@ -91,9 +93,13 @@ function local_dirs(){
 		mkdir "$addonaircraftdir"
 		echo "CREATED: $addonaircraftdir";
 	fi
-	if [ ! -h "$addonscenerydir" ]; then 
+    if [ ! -h "$addonscenerydir" ]; then 
 		mkdir "$addonscenerydir"
 		echo "CREATED: $addonscenerydir";
+	fi
+    if [ ! -h "$orthoscenerydir" ]; then 
+		mkdir "$orthoscenerydir"
+		echo "CREATED: $orthoscenerydir";
 	fi
 	if [ ! -h "$controlsdir" ]; then 
 		mkdir "$controlsdir"
@@ -264,7 +270,27 @@ function link_default_to_local(){
 	menu "main"
 }
 
-
+function link_orthos_to_local(){
+    clear
+	
+	check_customscenery
+	
+	find $orthoscenerydir -maxdepth 1 -type d ! -type l -printf '%P\0' | while read -d $'\0' folder; do
+		if [ ! -h "$PWD/Custom Scenery/$folder" ]; then
+			ln -s "$orthoscenerydir/$folder" "$current_folder/Custom Scenery/$folder"
+			echo "LINKED: $orthoscenerydir/$folder";
+		fi
+	done
+	
+	# Cleanup
+	if [ -L "$PWD/Custom Scenery/${folder_names[4]}" ]; then
+		rm "$PWD/Custom Scenery/${folder_names[4]}"
+	fi
+	
+	pause "Press enter to continue... "
+	
+	menu "main"
+}
 
 function menu(){
 
@@ -279,9 +305,11 @@ if [ $1 == "main" ]; then
 	echo " "
 	echo "2) Custom Scenery Linking "
 	echo " "
-	echo "3) Exit "
+	echo "3) Ortho Folder Linking"
 	echo " "
-	echo "Choice [1-3]:"
+	echo "4) Exit "
+	echo " "
+	echo "Choice [1-4]:"
 	echo " "
 	# Read choice
 	read case;
@@ -296,8 +324,9 @@ if [ $1 == "main" ]; then
 		
 	 2) menu "customscenery"
 		;;
-
-	 3) clear
+     3) menu "orthos"
+        ;;
+	 4) clear
 		exit
 	 esac
 fi
@@ -333,6 +362,25 @@ if [ $1 == "customscenery" ]; then
 		5)	link_default_to_local
 			;;
 		6) 	menu "main"
+			;;
+	esac
+fi
+if [ $1 == "orthos" ]; then
+	clear
+	echo "Pick an option for the Orthos folder"
+	echo " "
+	echo "1) Link ortho folders individually to local folder"
+	echo " "
+	echo "2) Return to main menu"
+	echo " "
+	echo "Choice [1-2]:"
+	echo " "
+	read case;
+	case $case in
+	
+		1) 	link_orthos_to_local
+			;;
+		2) 	menu "main"
 			;;
 	esac
 fi
