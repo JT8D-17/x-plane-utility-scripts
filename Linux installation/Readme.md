@@ -6,7 +6,7 @@ I use this to create several different X-Plane installations with a minimum of f
 
 **THIS SCRIPT IS TO BE CONSIDERED EXPERIMENTAL AND WAS ONLY TAILORED TO MY PERSONAL NEEDS. USE AT YOUR OWN RISK**  
 
---
+&nbsp;
 
 ## Notes
 
@@ -20,7 +20,8 @@ I use this to create several different X-Plane installations with a minimum of f
 - Run the script first to create all the base folders, then run the installer
 - Initial management of the "Custom Scenery" folder may have to be done manually. Let the installer download the files to the folder with X-Plane's binaries first, then manually move the "Custom Scenery" folder into the *X-Plane_Resources/Base_Data/* folder. After that, run the script again and implement the desired type of add-on scenery linking
 - I've tried to make this relatively fail-safe, but it's best to test all the features in a controlled environment before installing a production-grade X-Plane
---
+
+&nbsp;
 
 ## License
 

@@ -1,12 +1,6 @@
 # X-Plane Utility Scripts
-A collection of more or less handy scripts for X-Plane 11. Licensed under the EUPL v1.2 (see license.md).
+A collection of more or less handy scripts for X-Plane 11. Licensed under the EUPL v1.2 (see `license.md`).
 
-This repository contains:
+See the subfolders above and the respective readmes for more information.
 
---
-
-## X-Plane Linux Benchmarking Script
-
-A Linux Bash script that automates sequential X-Plane 11.50+ benchmarking runs and provides the results and contextual hard- and software information in its log file. 
-
---
+**Unless noted, all these scripts are for Linux (and maybe MacOS) only; sorry!**

@@ -4,7 +4,7 @@ This is a handy script that will automate X-Plane benchmark runs on Linux. It wi
 
 Test results are logged in an output file, which is appended and therefor has to be manually maintained. New sessions are timestamped.
 
---
+&nbsp;
 
 ## Requirements
 
@@ -13,7 +13,7 @@ Test results are logged in an output file, which is appended and therefor has to
 - Xrandr (for reporting display resolutions)
 - Loginctl (determining window manager)
 
---
+&nbsp;
 
 ## Installation and Configuration
 
@@ -32,7 +32,7 @@ A function call loooks like this:
 
 Sequential benchmark runs can be set up by simply calling the function multiple times with the appropiate parameters (such as in the example configuration).
 
---
+&nbsp;
 
 ## Usage
 
@@ -40,7 +40,7 @@ Sequential benchmark runs can be set up by simply calling the function multiple 
 2. Run the script from the X-Plane root folder
 3. Wait
 
---
+&nbsp;
 
 ## Benchmarking results
 
@@ -60,7 +60,7 @@ This file contains the following information:
 	- Screen resolution (from XRandr)
 	- Kernel name (from uname) / Displaymanager (from loginctl)
 
---
+&nbsp;
 
 ## Drawbacks
 
@@ -68,14 +68,15 @@ This script tries to grab as much information as it can from Linux and the Log.t
 
 When posting benchmarking results, any other useful info that could have influence on performance should be stated.
 
+**X-Plane's benchmark appears to be mostly CPU-limited (at higher cettings), so you will not see much, if any difference from testing different GPUs!**
 
---
+&nbsp;
 
 ## References
 
 [https://www.x-plane.com/kb/frame-rate-test/](https://www.x-plane.com/kb/frame-rate-test/) 
 
---
+&nbsp;
 
 ## License
 
