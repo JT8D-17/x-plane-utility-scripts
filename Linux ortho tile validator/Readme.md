@@ -15,7 +15,7 @@ This bash script will check all "zOrtho4XP_" folders in a given parent folder fo
 ## Usage
 
 - Copy this to the folder where your ortho folders are in (most likely `X-Plane 11\Custom Scenery`)
-- Run it from the terminal (navigate to your ortho folder first if necessary) with `./Scan_orthos.sh`
+- Run it from the terminal (navigate to your ortho folder first if necessary) with `./zScan_Orthos.sh`
 - Scan results are saved as `zOrtho_tile_integrity.txt` in the folder that the script is located in.
 
 &nbsp;
