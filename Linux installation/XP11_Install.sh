@@ -21,7 +21,6 @@ AddOn_Sceneries
 AddOn_Orthos
 )
 
-
 custom_scenery=(
 Aerosoft\ -\ EDDF\ Frankfurt
 Aerosoft\ -\ EDLP\ Paderborn-Lippstadt
@@ -270,22 +269,33 @@ function link_default_to_local(){
 	menu "main"
 }
 
-function link_orthos_to_local(){
+function ortho_folderloop(){
     clear
 	
 	check_customscenery
-	
-	find $orthoscenerydir -maxdepth 1 -type d ! -type l -printf '%P\0' | while read -d $'\0' folder; do
-		if [ ! -h "$PWD/Custom Scenery/$folder" ]; then
-			ln -s "$orthoscenerydir/$folder" "$current_folder/Custom Scenery/$folder"
-			echo "LINKED: $orthoscenerydir/$folder";
-		fi
+    
+    echo "Ortho folder is: $orthoscenerydir"
+    echo "Linking ortho tile folders, stand by..."
+    find $orthoscenerydir -maxdepth 2 -name "zOrtho4XP_*" -type d ! -type l -printf '%P\0' | while read -d $'\0' folder; do
+        # echo "Processing $folder"
+        tilefolder=${folder##*/}
+        # echo $tilefolder
+        regionfolder=${folder%/*}
+        # echo $regionfolder
+        if [ ! -h "$PWD/Custom Scenery/$tilefolder" ]; then
+        	ln -s "$orthoscenerydir/$folder/$subfolder" "$current_folder/Custom Scenery/$tilefolder+$regionfolder"
+            echo "LINKED: $orthoscenerydir/$folder";
+        fi
+        # Cleanup
+        if [ -L "$PWD/Custom Scenery/$orthoscenerydir/$regionfolder" ]; then
+            rm "$PWD/Custom Scenery/$orthoscenerydir/$regionfolder"
+        fi
 	done
 	
-	# Cleanup
-	if [ -L "$PWD/Custom Scenery/${folder_names[4]}" ]; then
-		rm "$PWD/Custom Scenery/${folder_names[4]}"
-	fi
+    # Cleanup
+    if [ -L "$PWD/Custom Scenery/$orthoscenerydir" ]; then
+        rm "$PWD/Custom Scenery/$orthoscenerydir"
+    fi
 	
 	pause "Press enter to continue... "
 	
@@ -321,7 +331,6 @@ if [ $1 == "main" ]; then
 		add_path
 		menu "customscenery"
 		;;
-		
 	 2) menu "customscenery"
 		;;
      3) menu "orthos"
@@ -378,7 +387,7 @@ if [ $1 == "orthos" ]; then
 	read case;
 	case $case in
 	
-		1) 	link_orthos_to_local
+		1) 	ortho_folderloop
 			;;
 		2) 	menu "main"
 			;;
