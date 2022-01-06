@@ -9,7 +9,7 @@
 # Configuration
 clear
 
-current_folder="$PWD"
+current_folder=$(pwd -P)
 parent_folder="$(dirname "$current_folder")/X-Plane_Resources"
 
 # FOLDERS
@@ -276,7 +276,7 @@ function ortho_folderloop(){
     
     echo "Ortho folder is: $orthoscenerydir"
     echo "Linking ortho tile folders, stand by..."
-    find $orthoscenerydir -maxdepth 2 -name "zOrtho4XP_*" -type d ! -type l -printf '%P\0' | while read -d $'\0' folder; do
+    find -L $orthoscenerydir -maxdepth 2 -name "zOrtho4XP_*" -type d ! -type l -printf '%P\0' | while read -d $'\0' folder; do
         # echo "Processing $folder"
         tilefolder=${folder##*/}
         # echo $tilefolder

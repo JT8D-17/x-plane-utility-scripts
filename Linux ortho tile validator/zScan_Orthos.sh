@@ -76,7 +76,7 @@ function folderloop(){
     echo "Ortho folder is: $path"
     echo "Ortho folder is: $path" >> $logfile
     echo "Checking Ortho tile integrity, stand by..."
-    find $path -maxdepth 2 -name "zOrtho4XP_*" -type d ! -type l -printf '%P\0' | while read -d $'\0' folder; do
+    find -L $path -maxdepth 2 -name "zOrtho4XP_*" -type d ! -type l -printf '%P\0' | while read -d $'\0' folder; do
         #echo $path/$folder
         checktile "$path" "$folder"
 	done
