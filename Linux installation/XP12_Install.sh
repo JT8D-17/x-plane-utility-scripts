@@ -1,6 +1,6 @@
 #! /bin/bash
 #
-# X-Plane 11 Installation - Automated script by BK
+# X-Plane 12 Installation - Automated script by BK
 #
 # README: https://github.com/JT8D-17/x-plane-utility-scripts/Benchmarking/readme.md
 #
@@ -10,50 +10,50 @@
 clear
 
 current_folder=$(pwd -P)
-parent_folder="$(dirname "$current_folder")/X-Plane_11_Resources"
+parent_folder="$(dirname "$current_folder")/X-Plane_12_Resources"
 
 # FOLDERS
 folder_names=(
 Base_Data
 Control_Profiles
-AddOn_Airplanes
+AddOn_Aircraft
 AddOn_Sceneries
 AddOn_Orthos
 )
 
 custom_scenery=(
-Aerosoft\ -\ EDDF\ Frankfurt
 Aerosoft\ -\ EDLP\ Paderborn-Lippstadt
-Aerosoft\ -\ EGLL\ Heathrow
 Aerosoft\ -\ LFMN\ Nice\ Cote\ d\ Azur\ X
-Aerosoft\ -\ LFPO\ Paris\ Orly
 Aerosoft\ -\ LPFR\ Faro
-Global\ Airports
-KSEA\ Demo\ Area
-LOWI\ Demo\ Area
+X-Plane\ Landmarks\ -\ Berlin\ and\ Frankfurt
+X-Plane\ Landmarks\ -\ Budapest
 X-Plane\ Landmarks\ -\ Chicago
 X-Plane\ Landmarks\ -\ Dubai
 X-Plane\ Landmarks\ -\ Las\ Vegas
 X-Plane\ Landmarks\ -\ London
+X-Plane\ Landmarks\ -\ Los\ Angeles
 X-Plane\ Landmarks\ -\ New\ York
+X-Plane\ Landmarks\ -\ Paris
+X-Plane\ Landmarks\ -\ Rio\ De\ Janeiro
+X-Plane\ Landmarks\ -\ Saint\ Louis
+X-Plane\ Landmarks\ -\ San\ Francisco
 X-Plane\ Landmarks\ -\ Sydney
 X-Plane\ Landmarks\ -\ Washington\ DC
 )
 
 common_folders=(
-Aircraft/Extra\ Aircraft
 Aircraft/Laminar\ Research
 Airfoils
 Custom\ Data
 Global\ Scenery
 Instructions
 Resources/bitmaps
-Resources/certificates
 Resources/default\ data
 Resources/default\ scenery
 Resources/dlls
 Resources/effects
 Resources/fonts
+Resources/geoids
 Resources/joystick\ configs
 Resources/keyboard\ presets
 Resources/manipulators
@@ -166,9 +166,9 @@ function add_path(){
 	else
 		echo "$HOME/.x-plane already exists!";
 	fi
-	#echo "" >> "$HOME/.x-plane/x-plane_install_11.txt"
-	echo "$PWD/" >> "$HOME/.x-plane/x-plane_install_11.txt"
-	echo "X-Plane 11 install path added to installer location file.";
+	#echo "" >> "$HOME/.x-plane/x-plane_install_12.txt"
+	echo "$PWD/" >> "$HOME/.x-plane/x-plane_install_12.txt"
+	echo "X-Plane 12 install path added to installer location file.";
 	#pause "Press enter to continue... "
 }
 
@@ -306,12 +306,12 @@ function menu(){
 
 if [ $1 == "main" ]; then
 	clear
-	echo "X-Plane 11 Installer"
+	echo "X-Plane 12 Installer"
 	echo " "
-	echo "X-Plane 11 base files: $basedir "
-	echo "X-Plane 11 control profile folder: $controlsdir "
+	echo "X-Plane 12 base files: $basedir "
+	echo "X-Plane 12 control profile folder: $controlsdir "
 	echo " "
-	echo "1) Install X-Plane 11 "
+	echo "1) Install X-Plane 12 "
 	echo " "
 	echo "2) Custom Scenery Linking "
 	echo " "
