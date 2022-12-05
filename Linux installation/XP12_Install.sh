@@ -25,7 +25,7 @@ custom_scenery=(
 Aerosoft\ -\ EDLP\ Paderborn-Lippstadt
 Aerosoft\ -\ LFMN\ Nice\ Cote\ d\ Azur\ X
 Aerosoft\ -\ LPFR\ Faro
-KBTV\ Burlington
+X-Plane\ Airports\ -\ KBTV\ Burlington
 X-Plane\ Landmarks\ -\ Berlin\ and\ Frankfurt
 X-Plane\ Landmarks\ -\ Budapest
 X-Plane\ Landmarks\ -\ Chicago
