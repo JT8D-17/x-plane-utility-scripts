@@ -43,8 +43,8 @@ else
         "$PWD/X-Plane-x86_64" --"$2" --fps_test="$1" --full=$FullscreenRes --load_smo=$Replayfile --weather_seed=1 --time_seed=1
     elif [ "$3" = "amdvlk" ]; then
         echo "Vulkan: AMDVLK" >> "$Outputfile"
-        echo Command line options: --"$2"  --fps_test="$1" --force_run --full=$FullscreenRes --load_smo=$Replayfile --weather_seed=1 --time_seed=1 >> "$Outputfile"
-        VK_ICD_FILENAMES=/usr/share/vulkan/icd.d/amd_icd64.json "$PWD/X-Plane-x86_64" --"$2"  --fps_test="$1" --force_run --full=$FullscreenRes --load_smo=$Replayfile --weather_seed=1 --time_seed=1
+        echo Command line options: --"$2" --force_run --fps_test="$1" --full=$FullscreenRes --load_smo=$Replayfile --weather_seed=1 --time_seed=1 >> "$Outputfile"
+        VK_ICD_FILENAMES=/usr/share/vulkan/icd.d/amd_icd64.json "$PWD/X-Plane-x86_64" --"$2" --force_run --fps_test="$1" --full=$FullscreenRes --load_smo=$Replayfile --weather_seed=1 --time_seed=1
     else
         echo "Vulkan: NVidia or AMD Mesa (ACO compiler)" >> "$Outputfile"
         echo Command line options: --"$2" --fps_test="$1" --full=$FullscreenRes --load_smo=$Replayfile --weather_seed=1 --time_seed=1 >> "$Outputfile"
