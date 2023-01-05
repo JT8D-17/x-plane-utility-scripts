@@ -15,6 +15,7 @@
 Outputfile="$PWD/Z_Bench_Result_DB".txt
 Logfile="$PWD/Log.txt"
 Replayfile=Output/replays/test_flight_737.fps
+FullscreenRes=1920x1080
 
 # SCRIPT
 function runbench {
@@ -36,19 +37,19 @@ if [ "$2" = "opengl" ]; then
 else
     if [ "$3" = "llvm" ]; then
         echo "Vulkan: AMD Mesa (LLVM compiler)" >> "$Outputfile"
-        echo Command line options: --"$2" --fps_test="$1" --load_smo=$Replayfile >> "$Outputfile"
+        echo Command line options: --"$2" --fps_test="$1" --full=$FullscreenRes --load_smo=$Replayfile --weather_seed=1 --time_seed=1 >> "$Outputfile"
         #export RADV_PERFTEST=llvm #Before Mesa 20.2
         export RADV_DEBUG=llvm #Since Mesa 20.2
-        "$PWD/X-Plane-x86_64" --"$2" --fps_test="$1" --load_smo=$Replayfile
+        "$PWD/X-Plane-x86_64" --"$2" --fps_test="$1" --full=$FullscreenRes --load_smo=$Replayfile --weather_seed=1 --time_seed=1
     elif [ "$3" = "amdvlk" ]; then
         echo "Vulkan: AMDVLK" >> "$Outputfile"
-        echo Command line options: --"$2" --fps_test="$1" --load_smo=$Replayfile >> "$Outputfile"
-        VK_ICD_FILENAMES=/usr/share/vulkan/icd.d/amd_icd64.json "$PWD/X-Plane-x86_64" --"$2" --force_run --fps_test="$1" --load_smo=$Replayfile
+        echo Command line options: --"$2"  --fps_test="$1" --force_run --full=$FullscreenRes --load_smo=$Replayfile --weather_seed=1 --time_seed=1 >> "$Outputfile"
+        VK_ICD_FILENAMES=/usr/share/vulkan/icd.d/amd_icd64.json "$PWD/X-Plane-x86_64" --"$2"  --fps_test="$1" --force_run --full=$FullscreenRes --load_smo=$Replayfile --weather_seed=1 --time_seed=1
     else
         echo "Vulkan: NVidia or AMD Mesa (ACO compiler)" >> "$Outputfile"
-        echo Command line options: --"$2" --fps_test="$1" --load_smo=$Replayfile >> "$Outputfile"
+        echo Command line options: --"$2" --fps_test="$1" --full=$FullscreenRes --load_smo=$Replayfile --weather_seed=1 --time_seed=1 >> "$Outputfile"
         #export RADV_PERFTEST=aco #Not needed since Mesa 20.2
-        "$PWD/X-Plane-x86_64" --"$2" --fps_test="$1" --load_smo=$Replayfile
+        "$PWD/X-Plane-x86_64" --"$2" --fps_test="$1" --full=$FullscreenRes --load_smo=$Replayfile --weather_seed=1 --time_seed=1
     fi
 fi
 
@@ -84,12 +85,15 @@ addheader
 #runbench 55 opengl          # NVidia and AMD
 # runbench 55 opengl glthread # AMD with Mesa ONLY
 runbench 1 vulkan          # NVidia and AMD
-runbench 2 vulkan          # NVidia and AMD
+#runbench 2 vulkan          # NVidia and AMD
 runbench 3 vulkan          # NVidia and AMD
-runbench 4 vulkan          # NVidia and AMD
+#runbench 4 vulkan          # NVidia and AMD
 runbench 5 vulkan          # NVidia and AMD
-runbench 54 vulkan          # NVidia and AMD
-runbench 55 vulkan          # NVidia and AMD
+runbench 41 vulkan          # NVidia and AMD
+runbench 43 vulkan          # NVidia and AMD
+runbench 45 vulkan          # NVidia and AMD
+#runbench 54 vulkan          # NVidia and AMD
+#runbench 55 vulkan          # NVidia and AMD
 #runbench 55 vulkan llvm     # AMD with Mesa ONLY
 #runbench 55 vulkan amdvlk   # AMD with AMDVLK ONLY
 extracthw
