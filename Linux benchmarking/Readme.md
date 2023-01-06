@@ -28,11 +28,18 @@ Adjusting the amount of benchmarking function calls with their appropriate param
 *runbench [test] [API] [Mode]*
 
 - *runbench*: Calls the function
-- *test*: Common tests are 3,4,5,54 and 55. Recommended are tests 5 and 55, or only 55, as these are the most demanding.
-- *API*: Should be "opengl" (any X-Plane 11 version) or "vulkan" (X-Plane 11.50+), without quotes.
-- *Mode*: "glthread" forces Mesa's GLThread mode on, otherwise it'll be off. **OpenGL only!**   
-"llvm" forces usage of the LLVM compiler (otherwise uses the default aco compiler). **Vulkan mode and Mesa drivers only**   
-"amdvlk" forces usage of the AMDVLK Vulkan driver. **Vulkan mode only**
+- *test*: Define the test codes that the script should perform.
+Common codes are 3,4,5,54 and 55. Recommended are tests 5 and 55, or only 55, as these are the most demanding.
+- *API*: Select the graphics API to be used for the benchmark.   
+Should be "opengl" (any X-Plane 11 version) or "vulkan" (X-Plane 11.50+) (without quotes).
+- *Mode*: Switch between driver modes, shader compilers or drivers.   
+"glthread" forces Mesa's GLThread mode on, otherwise it'll be off. **OpenGL only!**   
+"llvm" forces usage of the LLVM compiler (otherwise uses the default aco compiler). **Vulkan mode and Mesa drivers only!**   
+"amdvlk" forces usage of the AMDVLK Vulkan driver. **Vulkan mode only!**
+
+&nbsp;
+
+Sequential benchmark runs can be set up by simply calling the function multiple times with the appropiate parameters (such as in the example configuration).
 
 &nbsp;
 
@@ -40,9 +47,10 @@ Adjusting the amount of benchmarking function calls with their appropriate param
 
 *runbench [test] [Mode]*
 
-- *runbench*: Calls the function
-- *test*: Common tests are 3,4,5,54 and 55. Recommended are tests 5 and 55, or only 55, as these are the most demanding.
-- *Mode*: "llvm" forces usage of the LLVM compiler (otherwise uses the default aco compiler). **Vulkan mode and Mesa drivers only**   
+- *runbench*: Calls the function.
+- *test*: Define the test codes that the script should perform.   
+- *Mode*: Switch between drivers and shader compilers.   
+"llvm" forces usage of the LLVM compiler (otherwise uses the default aco compiler). **Vulkan mode and Mesa drivers only**   
 "amdvlk" forces usage of the AMDVLK Vulkan driver. **Vulkan mode only**
 
 &nbsp;
@@ -86,7 +94,7 @@ This script tries to grab as much information as it can from Linux and the Log.t
 
 When posting benchmarking results, any other useful info that could have influence on performance should be stated.
 
-**X-Plane's benchmark appears to be mostly CPU-limited (at higher cettings), so you will not see much, if any difference from testing different GPUs!**
+**X-Plane's benchmark appears to be mostly CPU-limited (at higher settings), so you will not see much, if any difference from testing different GPUs!**
 
 &nbsp;
 
