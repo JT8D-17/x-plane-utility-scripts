@@ -1,42 +1,51 @@
 #! /bin/bash
 #
 # X-Plane Benchmark - Automated script by BK
+# X-Plane 12 only! (vulkan renderer)
 #
 # README: https://github.com/JT8D-17/x-plane-utility-scripts/Benchmarking/readme.md
 #
 # LICENSED UNDER EUPL v1.2: https://github.com/JT8D-17/x-plane-utility-scripts/blob/master/license.md
 #
 #
-# Execution and parameters: See bottom of file
+# Execution: See bottom of file
 #
 #
-# Configuration and Parameters
 
+# CONFIGURATION / PARAMETERS
 Outputfile="$PWD/Z_Bench_Result_DB".txt
 Logfile="$PWD/Log.txt"
 Replayfile=Output/replays/test_flight_737.fps
+# Set desired screen resolution:
 FullscreenRes=1920x1080
+# Sequence of benchmark codes to run, refer to https://www.x-plane.com/kb/frame-rate-test/ for supported values
 benchmarks="41 43 45"
-rendererOption="" #[llvm,amdvlk]
 
-# repeat runs for statistical integrity
-repeatBench=false
-repeatCount=3 #run each benchmark x times
+# Optional, AMD ONLY: change vulkan driver
+# "llvm" uses the LLVM compiler instead of ACO
+# "amdvlk" uses AMD's open source Vulkan driver instead of Mesa's RADV
+# PICK ONE (default/fallback: "" = RADV + ACO)
+rendererOption="" 
+
+# Optional: Repeat runs for statistical integrity:
+repeatBench=false # toggle [true|false]
+repeatCount=3 # run each benchmark x times
 
 
 
 # SCRIPT
 function runbench {
+# Call as follows: runbench [*test-code*] ["llvm"|"amdvlk"|*other/none*]
 
-    if [ "$3" = "llvm" ]; then
-        #export RADV_PERFTEST=llvm #Before Mesa 20.2
+    if [ "$2" = "llvm" ]; then
+        # export RADV_PERFTEST=llvm #Before Mesa 20.2
         export RADV_DEBUG=llvm #Since Mesa 20.2
         "$PWD/X-Plane-x86_64" --fps_test="$1" --full=$FullscreenRes --load_smo=$Replayfile --weather_seed=1 --time_seed=1
-    elif [ "$3" = "amdvlk" ]; then
-        #not officially supported by LR; forcing execution
+    elif [ "$2" = "amdvlk" ]; then
+        # not officially supported by LR; forcing execution
         VK_ICD_FILENAMES=/usr/share/vulkan/icd.d/amd_icd64.json "$PWD/X-Plane-x86_64" --force_run --fps_test="$1" --full=$FullscreenRes --load_smo=$Replayfile --weather_seed=1 --time_seed=1
     else
-        #export RADV_PERFTEST=aco #Not needed since Mesa 20.2
+        # export RADV_PERFTEST=aco #Not needed since Mesa 20.2
         "$PWD/X-Plane-x86_64" --fps_test="$1" --full=$FullscreenRes --load_smo=$Replayfile --weather_seed=1 --time_seed=1
     fi
 
@@ -48,6 +57,7 @@ function addheader {
 }
 
 function writeparams {
+# Call as follows: writeparams [*test-code*] ["llvm"|"amdvlk"|*other/none*]
     echo ----------------------------------------------------------------------------- >> "$Outputfile"
     echo Bench: "$1" Samples: "$repeatCount" >> "$Outputfile"
     echo Command line options: --fps_test="$1" --full=$FullscreenRes --load_smo=$Replayfile --weather_seed=1 --time_seed=1 >> "$Outputfile"
@@ -81,7 +91,6 @@ function extracthw {
 }
 
 # Script Execution
-# Parameters for Vulkan: runbench [3/4/5/54/55] vulkan [llvm/amdvlk]
 
 addheader
 
