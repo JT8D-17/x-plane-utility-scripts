@@ -59,7 +59,7 @@ function addheader {
 function writeparams {
 # Call as follows: writeparams [*test-code*] ["llvm"|"amdvlk"|*other/none*]
     echo ----------------------------------------------------------------------------- >> "$Outputfile"
-    echo Bench: "$1" Samples: "$repeatCount" >> "$Outputfile"
+    echo Bench: "$1" >> "$Outputfile"
     echo Command line options: --fps_test="$1" --full=$FullscreenRes --load_smo=$Replayfile --weather_seed=1 --time_seed=1 >> "$Outputfile"
     if [ "$2" = "llvm" ]; then
         echo "Vulkan Driver: AMD Mesa (LLVM compiler)" >> "$Outputfile"
@@ -94,7 +94,7 @@ function extracthw {
 
 addheader
 
-if [ "$repeatBench"="true" ]; then
+if [ $repeatBench = true ]; then
     for n in $benchmarks; do
         writeparams "$n" "$rendererOption"
         i=1; while [ $i -le $repeatCount ]; do
