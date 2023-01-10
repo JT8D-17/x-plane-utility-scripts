@@ -16,9 +16,9 @@
 Outputfile="$PWD/Z_Bench_Result_DB".txt
 Logfile="$PWD/Log.txt"
 Replayfile=Output/replays/test_flight_737.fps
-# Set desired screen resolution:
+# Set desired screen resolution (MANDATORY):
 FullscreenRes=1920x1080
-# Sequence of benchmark codes to run, refer to https://www.x-plane.com/kb/frame-rate-test/ for supported values
+# One or more (separate with whitespace) benchmark code(s) to run (MANDATORY), refer to https://www.x-plane.com/kb/frame-rate-test/ for supported values
 benchmarks="1 3 5 41 43 45"
 
 # Optional, AMD ONLY: change vulkan driver

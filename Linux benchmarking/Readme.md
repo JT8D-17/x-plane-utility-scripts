@@ -45,19 +45,19 @@ Sequential benchmark runs can be set up by simply calling the function multiple 
 
 &nbsp;
 
-### X-Plane12_Bench.sh script function call
+### X-Plane12_Bench.sh configuration
 
-*runbench [test] [Mode]*
+#### Required settings
 
-- *runbench*: Calls the function.
-- *test*: Define the test codes that the script should perform.   
-- *Mode*: Switch between drivers and shader compilers. X-Plane 12 forces the vulkan API.
+- *FullscreenRes*: Sets the screen resolution to run the benchmark with.
+- *benchmarks*: Define the test codes that the script should perform. Set to a string or string array (separate with whitespace).
+
+#### Optional settings
+- *rendererOption* Switch between drivers and shader compilers. X-Plane 12 forces the vulkan API.
 "llvm" forces usage of the LLVM compiler (otherwise uses the default aco compiler). **Mesa drivers only**   
 "amdvlk" forces usage of the AMDVLK Vulkan driver. **This driver is not officially supported by X-Plane 12**
-
-&nbsp;
-
-Sequential benchmark runs can be set up by simply setting the *benchmarks* variable to a sequence of integers (such as in the example configuration). Optionally, each of these can be repeated a number of times to account for statistical variance.
+- *repeatBench* and *repeatCount* specify, if and how often you want to repeat each benchmark run in *benchmarks*
+- *write_csv* set to true, if you also want to output the most relevant data to a .csv file, allowing more comfortable evalutation with tools like Python or LibreOffice.
 
 &nbsp;
 
@@ -77,6 +77,7 @@ This file contains the following information:
 
 - At the start of the session:
 	- A session header, including a timestamp (useful for adding a short note about your system configuration later on)
+	- Driver mode used in that session (X-Plane 12) This assumes that you would only change your driver config in between sessions.
 - For each benchmark run:
 	- The command line options passed to the X-Plane binary
 	- Information about the device and driver versions used, extracted from X-Plane's log file (X-Plane 11)
