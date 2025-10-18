@@ -1,7 +1,7 @@
 # This Python script adds "jit.off()" to all Lua files in this folder and any subfolders.
 # Usage: Place e.g. in "plugins/xlua/scripts" and run it.
 #
-# cc0/public domain
+# EUPL v1.2 licensed
 
 import os
 
