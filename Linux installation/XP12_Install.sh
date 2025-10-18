@@ -10,7 +10,7 @@
 clear
 
 current_folder=$(pwd -P)
-parent_folder="$(dirname "$current_folder")/X-Plane_12_Resources"
+parent_folder="$(dirname "$current_folder")/X-Plane_12_Data"
 
 # FOLDERS
 folder_names=(
@@ -18,14 +18,17 @@ Base_Data
 Control_Profiles
 AddOn_Aircraft
 AddOn_Sceneries
-AddOn_Orthos
 )
 
 custom_scenery=(
-Aerosoft\ -\ EDLP\ Paderborn-Lippstadt
 Aerosoft\ -\ LFMN\ Nice\ Cote\ d\ Azur\ X
 Aerosoft\ -\ LPFR\ Faro
+X-Plane\ Airports\ -\ EGPR\ Barra
 X-Plane\ Airports\ -\ KBTV\ Burlington
+X-Plane\ Airports\ -\ KJRB\ Downtown\ Manhattan\ Heliport
+X-Plane\ Airports\ -\ LSEZ\ Zermatt\ Heliport
+X-Plane\ Airports\ -\ TFFJ\ St\ Barthelemy
+X-Plane\ Airports\ -\ TNCS\ Juancho\ E\ Yrausquin
 X-Plane\ Landmarks\ -\ Berlin\ and\ Frankfurt
 X-Plane\ Landmarks\ -\ Budapest
 X-Plane\ Landmarks\ -\ Chicago
@@ -38,6 +41,7 @@ X-Plane\ Landmarks\ -\ Paris
 X-Plane\ Landmarks\ -\ Portland
 X-Plane\ Landmarks\ -\ Rio\ De\ Janeiro
 X-Plane\ Landmarks\ -\ Saint\ Louis
+X-Plane\ Landmarks\ -\ Salzburg
 X-Plane\ Landmarks\ -\ San\ Francisco
 X-Plane\ Landmarks\ -\ Sydney
 X-Plane\ Landmarks\ -\ Washington\ DC
@@ -66,6 +70,7 @@ Resources/text
 Resources/tutorials
 Resources/vr
 Resources/wizards
+Support
 Weapons
 )
 
@@ -79,7 +84,6 @@ basedir="$parent_folder/${folder_names[0]}"
 controlsdir="$parent_folder/${folder_names[1]}"
 addonaircraftdir="$parent_folder/${folder_names[2]}"
 addonscenerydir="$parent_folder/${folder_names[3]}"
-orthoscenerydir="$parent_folder/${folder_names[4]}"
 
 function local_dirs(){
 	if [ ! -h "$parent_folder" ]; then 
@@ -97,10 +101,6 @@ function local_dirs(){
     if [ ! -h "$addonscenerydir" ]; then 
 		mkdir "$addonscenerydir"
 		echo "CREATED: $addonscenerydir";
-	fi
-    if [ ! -h "$orthoscenerydir" ]; then 
-		mkdir "$orthoscenerydir"
-		echo "CREATED: $orthoscenerydir";
 	fi
 	if [ ! -h "$controlsdir" ]; then 
 		mkdir "$controlsdir"
@@ -271,39 +271,6 @@ function link_default_to_local(){
 	menu "main"
 }
 
-function ortho_folderloop(){
-    clear
-	
-	check_customscenery
-    
-    echo "Ortho folder is: $orthoscenerydir"
-    echo "Linking ortho tile folders, stand by..."
-    find -L $orthoscenerydir -maxdepth 2 -name "zOrtho4XP_*" -type d ! -type l -printf '%P\0' | while read -d $'\0' folder; do
-        # echo "Processing $folder"
-        tilefolder=${folder##*/}
-        # echo $tilefolder
-        regionfolder=${folder%/*}
-        # echo $regionfolder
-        if [ ! -h "$PWD/Custom Scenery/$tilefolder" ]; then
-        	ln -s "$orthoscenerydir/$folder/$subfolder" "$current_folder/Custom Scenery/$tilefolder+$regionfolder"
-            echo "LINKED: $orthoscenerydir/$folder";
-        fi
-        # Cleanup
-        if [ -L "$PWD/Custom Scenery/$orthoscenerydir/$regionfolder" ]; then
-            rm "$PWD/Custom Scenery/$orthoscenerydir/$regionfolder"
-        fi
-	done
-	
-    # Cleanup
-    if [ -L "$PWD/Custom Scenery/$orthoscenerydir" ]; then
-        rm "$PWD/Custom Scenery/$orthoscenerydir"
-    fi
-	
-	pause "Press enter to continue... "
-	
-	menu "main"
-}
-
 function menu(){
 
 if [ $1 == "main" ]; then
@@ -317,11 +284,9 @@ if [ $1 == "main" ]; then
 	echo " "
 	echo "2) Custom Scenery Linking "
 	echo " "
-	echo "3) Ortho Folder Linking"
+	echo "3) Exit "
 	echo " "
-	echo "4) Exit "
-	echo " "
-	echo "Choice [1-4]:"
+	echo "Choice [1-3]:"
 	echo " "
 	# Read choice
 	read case;
@@ -335,9 +300,7 @@ if [ $1 == "main" ]; then
 		;;
 	 2) menu "customscenery"
 		;;
-     3) menu "orthos"
-        ;;
-	 4) clear
+	 3) clear
 		exit
 	 esac
 fi
@@ -373,25 +336,6 @@ if [ $1 == "customscenery" ]; then
 		5)	link_default_to_local
 			;;
 		6) 	menu "main"
-			;;
-	esac
-fi
-if [ $1 == "orthos" ]; then
-	clear
-	echo "Pick an option for the Orthos folder"
-	echo " "
-	echo "1) Link ortho folders individually to local folder"
-	echo " "
-	echo "2) Return to main menu"
-	echo " "
-	echo "Choice [1-2]:"
-	echo " "
-	read case;
-	case $case in
-	
-		1) 	ortho_folderloop
-			;;
-		2) 	menu "main"
 			;;
 	esac
 fi
