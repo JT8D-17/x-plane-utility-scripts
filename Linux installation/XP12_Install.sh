@@ -10,14 +10,14 @@
 clear
 
 current_folder=$(pwd -P)
-parent_folder="$(dirname "$current_folder")/X-Plane_12_Data"
+parent_folder="$(dirname "$current_folder")/X-Plane_12_Common"
 
 # FOLDERS
 folder_names=(
-Base_Data
-Control_Profiles
+0_Control_Profiles
 AddOn_Aircraft
 AddOn_Sceneries
+AddOn_Plugins
 )
 
 custom_scenery=(
@@ -67,6 +67,7 @@ Resources/map\ data
 Resources/menus
 Resources/sounds
 Resources/text
+Resources/timezones
 Resources/tutorials
 Resources/vr
 Resources/wizards
@@ -80,59 +81,67 @@ function pause(){
    read -p "$*"
 }
 
-basedir="$parent_folder/${folder_names[0]}"
-controlsdir="$parent_folder/${folder_names[1]}"
-addonaircraftdir="$parent_folder/${folder_names[2]}"
-addonscenerydir="$parent_folder/${folder_names[3]}"
+controlsdir="$parent_folder/${folder_names[0]}"
+addonaircraftdir="$parent_folder/${folder_names[1]}"
+addonscenerydir="$parent_folder/${folder_names[2]}"
+addonpluginsdir="$parent_folder/${folder_names[3]}"
 
 function local_dirs(){
 	if [ ! -h "$parent_folder" ]; then 
 		mkdir "$parent_folder"
-		echo "CREATED: $parent_folder";
+		echo "DONE: $parent_folder";
 	fi
-	if [ ! -h "$basedir" ]; then 
-		mkdir "$basedir"
-		echo "CREATED: $basedir";
+	if [ ! -h "$parent_folder" ]; then
+		mkdir "$parent_folder"
+		echo "DONE: $parent_folder";
 	fi
 	if [ ! -h "$addonaircraftdir" ]; then 
 		mkdir "$addonaircraftdir"
-		echo "CREATED: $addonaircraftdir";
+		echo "DONE: $addonaircraftdir";
 	fi
     if [ ! -h "$addonscenerydir" ]; then 
 		mkdir "$addonscenerydir"
-		echo "CREATED: $addonscenerydir";
+		echo "DONE: $addonscenerydir";
+	fi
+    if [ ! -h "$addonpluginsdir" ]; then
+		mkdir "$addonpluginsdir"
+		echo "DONE: $addonpluginsdir";
 	fi
 	if [ ! -h "$controlsdir" ]; then 
 		mkdir "$controlsdir"
-		echo "CREATED: $controlsdir";
+		echo "DONE: $controlsdir";
 	fi
 	if [ ! -h "$PWD/Aircraft" ]; then 
 		mkdir "$PWD/Aircraft"
-		echo "CREATED: $PWD/Aircraft";
+		echo "DONE: $PWD/Aircraft";
 	fi
-	if [ ! -h "$basedir/Aircraft" ]; then 
-		mkdir "$basedir/Aircraft"
-		echo "CREATED: $basedir/Aircraft";
+	if [ ! -h "$parent_folder/Aircraft" ]; then
+		mkdir "$parent_folder/Aircraft"
+		echo "DONE: $parent_folder/Aircraft";
+	fi
+	if [ ! -h "$parent_folder/Custom Scenery" ]; then
+		mkdir "$parent_folder/Custom Scenery"
+		echo "DONE: $parent_folder/Custom Scenery";
 	fi
 	if [ ! -h "$PWD/Resources" ]; then 
 		mkdir "$PWD/Resources"
-		echo "CREATED: $PWD/Resources";
+		echo "DONE: $PWD/Resources";
 	fi
-	if [ ! -h "$basedir/Resources" ]; then 
-		mkdir "$basedir/Resources"
-		echo "CREATED: $basedir/Resources";
+	if [ ! -h "$parent_folder/Resources" ]; then
+		mkdir "$parent_folder/Resources"
+		echo "DONE: $parent_folder/Resources";
 	fi
 	if [ ! -h "$PWD/Resources/plugins" ]; then 
 		mkdir "$PWD/Resources/plugins"
-		echo "CREATED: $PWD/Resources/plugins";
+		echo "DONE: $PWD/Resources/plugins";
 	fi
 	if [ ! -h "$PWD/Output" ]; then 
 		mkdir "$PWD/Output"
-		echo "CREATED: $PWD/Output";
+		echo "DONE: $PWD/Output";
 	fi
 	if [ ! -h "$PWD/Output/preferences" ]; then 
 		mkdir "$PWD/Output/preferences"
-		echo "CREATED: $PWD/Output/preferences";
+		echo "DONE: $PWD/Output/preferences";
 	fi
 	if [ ! -h "$PWD/Output/preferences/control profiles" ]; then
 		ln -s "$controlsdir" "$PWD/Output/preferences/control profiles"
@@ -145,20 +154,28 @@ function local_dirs(){
 	pause "Press enter to continue... "
 }
 
+function check_customscenery(){
+	if [ ! -h "$PWD/Custom Scenery" ]; then
+		mkdir "$PWD/Custom Scenery"
+		echo "DONE: $PWD/Custom Scenery";
+	fi
+}
+
 function construct_folders(){
 	clear
 	array=$1'[@]'
 	for folder in "${!array}"; do 
-		if [ ! -h "$basedir/$folder" ]; then
-			mkdir "$basedir/$folder"
-			echo "CREATED: $basedir/$folder";
+		if [ ! -h "$parent_folder/$folder" ]; then
+			mkdir "$parent_folder/$folder"
+			echo "DONE: $parent_folder/$folder";
 		fi
 		if [ ! -h "$PWD/$folder" ]; then 
-			ln -s "$basedir/$folder" "$PWD/$folder"
+			ln -s "$parent_folder/$folder" "$PWD/$folder"
 			echo "LINKED: $folder";
 			#pause "Press enter to continue... "
 		fi
 	done
+	check_customscenery
 	pause "Press enter to continue... "
 }
 
@@ -174,13 +191,6 @@ function add_path(){
 	#pause "Press enter to continue... "
 }
 
-function check_customscenery(){
-	if [ ! -h "$PWD/Custom Scenery" ]; then 
-		mkdir "$PWD/Custom Scenery"
-		echo "CREATED: $PWD/Custom Scenery";
-	fi
-}
-
 function link_defaults_to_local(){
 	clear
 	
@@ -188,16 +198,17 @@ function link_defaults_to_local(){
 	
 	array=$1'[@]'
 	for folder in "${!array}"; do 
-		if [ ! -h "$basedir/Custom Scenery/$folder" ]; then
-			mkdir "$basedir/Custom Scenery/$folder"
-			echo "CREATED: $basedir/Custom Scenery/$folder";
+		if [ ! -h "$parent_folder/Custom Scenery/$folder" ]; then
+			mkdir "$parent_folder/Custom Scenery/$folder"
+			echo "DONE: $parent_folder/Custom Scenery/$folder";
 		fi
 		if [ ! -h "$PWD/Custom Scenery/$folder" ]; then 
-			ln -s "$basedir/Custom Scenery/$folder" "$PWD/Custom Scenery/$folder"
+			ln -s "$parent_folder/Custom Scenery/$folder" "$PWD/Custom Scenery/$folder"
 			echo "LINKED: $folder";
 		fi
 	done
 	
+	echo "DONE: Linking Default Custom Scenery Folders To Local Custom Scenery Folder"
 	pause "Press enter to continue... "
 	
 	menu "main"
@@ -209,7 +220,7 @@ function link_addons_to_local(){
 	check_customscenery
 	
 	find $addonscenerydir -maxdepth 1 -type d ! -type l -printf '%P\0' | while read -d $'\0' folder; do
-		if [ ! -h "$PWD/Custom Scenery/$folder" ]; then
+		if [ ! $folder=="" ] && [ ! -h "$PWD/Custom Scenery/$folder" ]; then
 			ln -s "$addonscenerydir/$folder" "$current_folder/Custom Scenery/$folder"
 			echo "LINKED: $addonscenerydir/$folder";
 		fi
@@ -220,6 +231,7 @@ function link_addons_to_local(){
 		rm "$PWD/Custom Scenery/${folder_names[3]}"
 	fi
 	
+	echo "DONE: Linking Add-On Scenery Folders To Local Custom Scenery Folder"
 	pause "Press enter to continue... "
 	
 	menu "main"
@@ -230,16 +242,17 @@ function link_defaults_to_addonscenery(){
 
 	array=$1'[@]'
 	for folder in "${!array}"; do 
-		if [ ! -h "$basedir/Custom Scenery/$folder" ]; then
-			mkdir "$basedir/Custom Scenery/$folder"
-			echo "CREATED: $basedir/Custom Scenery/$folder";
+		if [ ! -h "$parent_folder/Custom Scenery/$folder" ]; then
+			mkdir "$parent_folder/Custom Scenery/$folder"
+			echo "DONE: $parent_folder/Custom Scenery/$folder";
 		fi
 		if [ ! -h "$addonscenerydir/$folder" ]; then 
-			ln -s "$basedir/Custom Scenery/$folder" "$addonscenerydir/$folder"
-			echo "LINKED: $basedir/Custom Scenery/$folder";
+			ln -s "$parent_folder/Custom Scenery/$folder" "$addonscenerydir/$folder"
+			echo "LINKED: $parent_folder/Custom Scenery/$folder";
 		fi
 	done
 	
+	echo "DONE: Linking Default Custom Scenery Folders To Add-On Scenery Folder"
 	pause "Press enter to continue... "
 	
 	menu "main"
@@ -253,6 +266,7 @@ function link_addonscenery_to_local(){
 		echo "LINKED: $addonscenerydir";
 	fi
 	
+	echo "DONE: Linking Entire Add-On Scenery Folder As Local Custom Scenery Folder"
 	pause "Press enter to continue... "
 	
 	menu "main"
@@ -262,12 +276,40 @@ function link_default_to_local(){
 	clear
 	
 	if [ ! -h "$PWD/Custom Scenery" ]; then 
-		ln -s "$basedir/Custom Scenery" "$PWD/Custom Scenery"
-		echo "LINKED: $basedir/Custom Scenery";
+		ln -s "$parent_folder/Custom Scenery" "$PWD/Custom Scenery"
+		echo "LINKED: $parent_folder/Custom Scenery";
 	fi
 	
+	echo "DONE: Linking Default Custom Scenery Folder As Local Custom Scenery Folder"
 	pause "Press enter to continue... "
 	
+	menu "main"
+}
+
+function link_plugins_to_local(){
+    clear
+
+	find $addonpluginsdir -maxdepth 1 -type d ! -type l -printf '%P\0' | while read -d $'\0' folder; do
+		if [ ! -h "$PWD/Resources/plugins/$folder" ] && [ ! -d "$PWD/Resources/plugins/$folder" ]; then
+			ln -s "$addonpluginsdir/$folder" "$current_folder/Resources/plugins/$folder"
+			echo "LINKED: $addonpluginsdir/$folder";
+		fi
+	done
+
+	find $addonpluginsdir -maxdepth 1 -type f ! -type l -printf '%P\0' | while read -d $'\0' file; do
+		if [ ! -h "$PWD/Resources/plugins/$file" ]; then
+			ln -s "$addonpluginsdir/$file" "$current_folder/Resources/plugins/$file"
+			echo "LINKED: $addonpluginsdir/$file";
+		fi
+	done
+
+	# Cleanup
+	if [ -L "$PWD/Resources/plugins/${folder_names[4]}" ]; then
+		rm "$PWD/Resources/plugins/${folder_names[4]}"
+	fi
+
+	pause "Press enter to continue... "
+
 	menu "main"
 }
 
@@ -277,16 +319,18 @@ if [ $1 == "main" ]; then
 	clear
 	echo "X-Plane 12 Installer"
 	echo " "
-	echo "X-Plane 12 base files: $basedir "
+	echo "X-Plane 12 base files: $parent_folder "
 	echo "X-Plane 12 control profile folder: $controlsdir "
 	echo " "
 	echo "1) Install X-Plane 12 "
 	echo " "
 	echo "2) Custom Scenery Linking "
 	echo " "
-	echo "3) Exit "
+	echo "3) Link Third Party Plugins "
 	echo " "
-	echo "Choice [1-3]:"
+	echo "4) Exit "
+	echo " "
+	echo "Choice [1-4]:"
 	echo " "
 	# Read choice
 	read case;
@@ -300,7 +344,9 @@ if [ $1 == "main" ]; then
 		;;
 	 2) menu "customscenery"
 		;;
-	 3) clear
+	 3) link_plugins_to_local
+		;;
+	 4) clear
 		exit
 	 esac
 fi
