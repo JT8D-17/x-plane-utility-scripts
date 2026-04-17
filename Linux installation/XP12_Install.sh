@@ -218,17 +218,18 @@ function link_addons_to_local(){
     clear
 	
 	check_customscenery
-	
+
 	find $addonscenerydir -maxdepth 1 -type d ! -type l -printf '%P\0' | while read -d $'\0' folder; do
-		if [ ! $folder=="" ] && [ ! -h "$PWD/Custom Scenery/$folder" ]; then
+		if [ ! -h "$PWD/Custom Scenery/$folder" ]; then
 			ln -s "$addonscenerydir/$folder" "$current_folder/Custom Scenery/$folder"
 			echo "LINKED: $addonscenerydir/$folder";
 		fi
 	done
 	
 	# Cleanup
-	if [ -L "$PWD/Custom Scenery/${folder_names[3]}" ]; then
-		rm "$PWD/Custom Scenery/${folder_names[3]}"
+	if [ -L "$PWD/Custom Scenery/${folder_names[2]}" ]; then
+		rm "$PWD/Custom Scenery/${folder_names[2]}"
+		echo "CLEAN UP: Accidential link to ${folder_names[2]} because Bash is stupid"
 	fi
 	
 	echo "DONE: Linking Add-On Scenery Folders To Local Custom Scenery Folder"
