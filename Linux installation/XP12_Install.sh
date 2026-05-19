@@ -13,13 +13,6 @@ current_folder=$(pwd -P)
 parent_folder="$(dirname "$current_folder")/X-Plane_12_Common"
 
 # FOLDERS
-folder_names=(
-0_Control_Profiles
-AddOn_Aircraft
-AddOn_Sceneries
-AddOn_Plugins
-)
-
 custom_scenery=(
 Aerosoft\ -\ LFMN\ Nice\ Cote\ d\ Azur\ X
 Aerosoft\ -\ LPFR\ Faro
@@ -51,7 +44,9 @@ common_folders=(
 Aircraft/Laminar\ Research
 Airfoils
 Custom\ Data
-Global\ Scenery
+Global\ Scenery/Global\ Airports
+Global\ Scenery/X-Plane\ 12\ Demo\ Areas
+Global\ Scenery/X-Plane\ 12\ Global\ Scenery
 Instructions
 Resources/bitmaps
 Resources/default\ data
@@ -81,10 +76,11 @@ function pause(){
    read -p "$*"
 }
 
-controlsdir="$parent_folder/${folder_names[0]}"
-addonaircraftdir="$parent_folder/${folder_names[1]}"
-addonscenerydir="$parent_folder/${folder_names[2]}"
-addonpluginsdir="$parent_folder/${folder_names[3]}"
+controlsdir="$parent_folder/0_Control_Profiles"
+fmsplansdir="$parent_folder/0_FMS_Plans"
+addonaircraftdir="$parent_folder/AddOn_Aircraft"
+addonscenerydir="$parent_folder/AddOn_Sceneries"
+addonpluginsdir="$parent_folder/AddOn_Plugins"
 
 function local_dirs(){
 	if [ ! -h "$parent_folder" ]; then 
@@ -111,6 +107,10 @@ function local_dirs(){
 		mkdir "$controlsdir"
 		echo "DONE: $controlsdir";
 	fi
+	if [ ! -h "$fmsplansdir" ]; then
+		mkdir "$fmsplansdir"
+		echo "DONE: $fmsplansdir";
+	fi
 	if [ ! -h "$PWD/Aircraft" ]; then 
 		mkdir "$PWD/Aircraft"
 		echo "DONE: $PWD/Aircraft";
@@ -122,6 +122,14 @@ function local_dirs(){
 	if [ ! -h "$parent_folder/Custom Scenery" ]; then
 		mkdir "$parent_folder/Custom Scenery"
 		echo "DONE: $parent_folder/Custom Scenery";
+	fi
+	if [ ! -h "$PWD/Global Scenery" ]; then
+		mkdir "$PWD/Global Scenery"
+		echo "DONE: $PWD/Global Scenery";
+	fi
+	if [ ! -h "$parent_folder/Global Scenery" ]; then
+		mkdir "$parent_folder/Global Scenery"
+		echo "DONE: $parent_folder/Global Scenery";
 	fi
 	if [ ! -h "$PWD/Resources" ]; then 
 		mkdir "$PWD/Resources"
@@ -147,9 +155,13 @@ function local_dirs(){
 		ln -s "$controlsdir" "$PWD/Output/preferences/control profiles"
 		echo "LINKED: Output/preferences/control profiles";
 	fi
-	if [ ! -h "$PWD/Aircraft/${folder_names[2]}" ]; then
-		ln -s "$addonaircraftdir" "$PWD/Aircraft/${folder_names[2]}"
-		echo "LINKED: Aircraft/${folder_names[2]}";
+	if [ ! -h "$PWD/Output/FMS plans" ]; then
+		ln -s "$fmsplansdir" "$PWD/Output/FMS plans"
+		echo "LINKED: Output/FMS plans";
+	fi
+	if [ ! -h "$PWD/Aircraft/AddOn_Aircraft" ]; then
+		ln -s "$addonaircraftdir" "$PWD/Aircraft/AddOn_Aircraft"
+		echo "LINKED: Aircraft/AddOn_Aircraft";
 	fi
 	pause "Press enter to continue... "
 }
@@ -218,18 +230,17 @@ function link_addons_to_local(){
     clear
 	
 	check_customscenery
-
+	
 	find $addonscenerydir -maxdepth 1 -type d ! -type l -printf '%P\0' | while read -d $'\0' folder; do
-		if [ ! -h "$PWD/Custom Scenery/$folder" ]; then
+		if [ ! $folder=="" ] && [ ! -h "$PWD/Custom Scenery/$folder" ]; then
 			ln -s "$addonscenerydir/$folder" "$current_folder/Custom Scenery/$folder"
 			echo "LINKED: $addonscenerydir/$folder";
 		fi
 	done
 	
 	# Cleanup
-	if [ -L "$PWD/Custom Scenery/${folder_names[2]}" ]; then
-		rm "$PWD/Custom Scenery/${folder_names[2]}"
-		echo "CLEAN UP: Accidential link to ${folder_names[2]} because Bash is stupid"
+	if [ -L "$PWD/Custom Scenery/AddOn_Sceneries" ]; then
+		rm "$PWD/Custom Scenery/AddOn_Sceneries"
 	fi
 	
 	echo "DONE: Linking Add-On Scenery Folders To Local Custom Scenery Folder"
@@ -305,8 +316,8 @@ function link_plugins_to_local(){
 	done
 
 	# Cleanup
-	if [ -L "$PWD/Resources/plugins/${folder_names[4]}" ]; then
-		rm "$PWD/Resources/plugins/${folder_names[4]}"
+	if [ -L "$PWD/Resources/plugins/AddOn_Plugins" ]; then
+		rm "$PWD/Resources/plugins/AddOn_Plugins"
 	fi
 
 	pause "Press enter to continue... "
